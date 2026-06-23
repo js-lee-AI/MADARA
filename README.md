@@ -126,8 +126,7 @@ chosen automatically from the RSC class and the NF baseline.
 | Gemma-2-9B | CONFLICTS | S | 60.8 | 64.6 | **SDA** | **63.3** | +2.5 |
 | Gemma-2-9B | FEVER | QO | 92.2 | 92.5 | **ATF** | **93.6** | +1.4 |
 
-Key findings:
-
+We find out
 * For weak-baseline models, **per-document isolation drives outsized gains**
   (+36.3pp for Llama, +25.4pp for Mistral on CONFLICTS; up to +49.8pp on
   TriviaQA), and assessment-free random isolation matches the full pipeline,
