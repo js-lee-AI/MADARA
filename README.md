@@ -141,12 +141,15 @@ We find out
 multi-hop results, significance tests, and the full ablations.
 
 ## Citation
+
+```text
 @article{lee2026isolate,
   title={To Isolate or to Score? Model-Adaptive Assessment for Cost-Efficient Multi-Agent RAG},
   author={Lee, Jungseob and Park, Chanjun and Lim, Heuiseok},
   journal={arXiv preprint arXiv:2606.25191},
   year={2026}
 }
+```
 
 ## License
 
