@@ -1,19 +1,38 @@
-# MADARA: Model-Adaptive Document Assessment Routing Architecture
+<div align="center">
 
-Reference implementation of MADARA, a **training-free** pipeline for
-cost-efficient multi-agent retrieval-augmented generation (RAG). Multi-agent
-document assessment multiplies inference cost, yet whether it helps depends
-sharply on the model. MADARA diagnoses each model-task pair and routes it to the
-cheapest assessment treatment that actually works.
+# 🧭 MADARA
+
+### Model-Adaptive Document Assessment Routing Architecture
+
+<em>To Isolate or to Score? Model-Adaptive Assessment for Cost-Efficient Multi-Agent RAG</em>
+
+[![arXiv](https://img.shields.io/badge/arXiv-2606.25191-b31b1b.svg)](https://arxiv.org/abs/2606.25191)
+[![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
+[![Paper: CC BY 4.0](https://img.shields.io/badge/Paper-CC%20BY%204.0-blue.svg)](https://arxiv.org/abs/2606.25191)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
+[![Stars](https://img.shields.io/github/stars/js-lee-AI/MADARA?style=social)](https://github.com/js-lee-AI/MADARA/stargazers)
+
+<img src="assets/framework.png" width="92%" alt="MADARA framework" />
+
+<em>A training-free pipeline that diagnoses each model-task pair and routes it to the cheapest document-assessment treatment that actually works.</em>
+
+<b><a href="https://arxiv.org/abs/2606.25191">📄 Paper</a> · <a href="#overview">✨ Overview</a> · <a href="#installation">⚙️ Installation</a> · <a href="#usage">🚀 Usage</a> · <a href="#results">📊 Results</a> · <a href="#citation">📌 Citation</a></b>
+
+</div>
+
+---
+
+## News
+
+- **2026-06** · Paper released on [arXiv](https://arxiv.org/abs/2606.25191), and the reference implementation is public here.
+
+## Overview
+
+**MADARA** is the reference implementation of a **training-free** pipeline for cost-efficient multi-agent retrieval-augmented generation (RAG). Multi-agent document assessment multiplies inference cost, yet whether it helps depends sharply on the model. MADARA diagnoses each model-task pair and routes it to the cheapest assessment treatment that actually works.
 
 The pipeline has two diagnostics and four treatments:
 
-* **RSC (Reasoning-Score Coupling)** is a label-free probe. It perturbs the
-  reasoning behind a model's document scores in three increasing steps
-  (shuffle, contradict, randomize) and checks whether the scores degrade
-  monotonically. Monotonic degradation means scoring is reasoning-driven
-  (*quality-ordered*); otherwise it is *stochastic*. Strength is read from the
-  first-level correlation `rho_1`.
+* **RSC (Reasoning-Score Coupling)** is a label-free probe. It perturbs the reasoning behind a model's document scores in three increasing steps (shuffle, contradict, randomize) and checks whether the scores degrade monotonically. Monotonic degradation means scoring is reasoning-driven (*quality-ordered*); otherwise it is *stochastic*. Strength is read from the first-level correlation `rho_1`.
 * **NF (No-Filter) baseline** measures the model's raw context-handling capacity.
 
 Routing (thresholds fixed on a single Mistral-7B pilot, applied zero-shot):
@@ -27,19 +46,12 @@ else                        -> ATF   (strongly coupled: threshold-filter)
 
 The four treatments:
 
-* **PDE (Per-Document Extraction)** answers from each top-k document in
-  isolation and votes, curing multi-document context confusion.
-* **SDA (Score Distribution Alignment)** converts each agent's scores to
-  percentile ranks before aggregating, for models whose reasoning does not drive
-  scores.
-* **CoT De-Polarization** forces step-by-step reasoning before scoring, undoing
-  the direct-to-extreme polarization of weakly coupled models.
-* **ATF (Adaptive Threshold Filtering)** keeps documents scoring above
-  `mu - 0.5*sigma`, adding no extra LLM calls.
+* **PDE (Per-Document Extraction)** answers from each top-k document in isolation and votes, curing multi-document context confusion.
+* **SDA (Score Distribution Alignment)** converts each agent's scores to percentile ranks before aggregating, for models whose reasoning does not drive scores.
+* **CoT De-Polarization** forces step-by-step reasoning before scoring, undoing the direct-to-extreme polarization of weakly coupled models.
+* **ATF (Adaptive Threshold Filtering)** keeps documents scoring above `mu - 0.5*sigma`, adding no extra LLM calls.
 
-> Paper: *To Isolate or to Score? Model-Adaptive Assessment for Cost-Efficient
-> Multi-Agent RAG.* A BibTeX entry will be added once the arXiv version is
-> available.
+> Paper: *To Isolate or to Score? Model-Adaptive Assessment for Cost-Efficient Multi-Agent RAG* ([arXiv:2606.25191](https://arxiv.org/abs/2606.25191)).
 
 ## What's in this repository
 
@@ -96,22 +108,15 @@ MADARA is backend-agnostic. Provide any object with a `chat` method:
 chat(system, user, *, max_tokens=512, temperature=0.6) -> str   # assistant text
 ```
 
-See `madara/model_client.py` for the abstract base class and a mock used by the
-example. Implement it for your model (a local vLLM or transformers server, or a
-hosted chat API). Override `chat_batch` for server-side batching.
+See `madara/model_client.py` for the abstract base class and a mock used by the example. Implement it for your model (a local vLLM or transformers server, or a hosted chat API). Override `chat_batch` for server-side batching.
 
 ## Benchmarks
 
-The paper evaluates on public datasets, which are **not redistributed here**.
-Obtain them from their original sources under their respective licenses:
-CONFLICTS, FEVER, TriviaQA, and MuSiQue.
+The paper evaluates on public datasets, which are **not redistributed here**. Obtain them from their original sources under their respective licenses: CONFLICTS, FEVER, TriviaQA, and MuSiQue.
 
 ## Results
 
-MADARA routes five open-weight 7B-9B instruction-tuned models zero-shot. The
-routing thresholds are derived from a single pilot model (Mistral-7B) and
-applied unchanged to the other four families. Exact Match (%); the strategy is
-chosen automatically from the RSC class and the NF baseline.
+MADARA routes five open-weight 7B-9B instruction-tuned models zero-shot. The routing thresholds are derived from a single pilot model (Mistral-7B) and applied unchanged to the other four families. Exact Match (%); the strategy is chosen automatically from the RSC class and the NF baseline.
 
 | Model | Task | RSC | NF | Best component | MADARA strategy | MADARA EM | vs NF |
 |---|---|---|---|---|---|---|---|
@@ -126,23 +131,16 @@ chosen automatically from the RSC class and the NF baseline.
 | Gemma-2-9B | CONFLICTS | S | 60.8 | 64.6 | **SDA** | **63.3** | +2.5 |
 | Gemma-2-9B | FEVER | QO | 92.2 | 92.5 | **ATF** | **93.6** | +1.4 |
 
-We find out
-* For weak-baseline models, **per-document isolation drives outsized gains**
-  (+36.3pp for Llama, +25.4pp for Mistral on CONFLICTS; up to +49.8pp on
-  TriviaQA), and assessment-free random isolation matches the full pipeline,
-  cutting inference calls roughly 4x.
-* For strong baselines, scoring quality matters and RSC selects the right scoring
-  treatment, matching the oracle treatment 3x more often than a score-entropy
-  heuristic (3/10 vs 1/10).
-* The isolation finding persists under dense retrieval and generative reranking,
-  and the diagnostic boundary transfers zero-shot to four unseen model families.
+We find that
+* For weak-baseline models, **per-document isolation drives outsized gains** (+36.3pp for Llama, +25.4pp for Mistral on CONFLICTS; up to +49.8pp on TriviaQA), and assessment-free random isolation matches the full pipeline, cutting inference calls roughly 4x.
+* For strong baselines, scoring quality matters and RSC selects the right scoring treatment, matching the oracle treatment 3x more often than a score-entropy heuristic (3/10 vs 1/10).
+* The isolation finding persists under dense retrieval and generative reranking, and the diagnostic boundary transfers zero-shot to four unseen model families.
 
-`S` = stochastic, `QO` = quality-ordered. See the paper for Token F1, MuSiQue
-multi-hop results, significance tests, and the full ablations.
+`S` = stochastic, `QO` = quality-ordered. See the paper for Token F1, MuSiQue multi-hop results, significance tests, and the full ablations.
 
 ## Citation
 
-```text
+```bibtex
 @article{lee2026isolate,
   title={To Isolate or to Score? Model-Adaptive Assessment for Cost-Efficient Multi-Agent RAG},
   author={Lee, Jungseob and Park, Chanjun and Lim, Heuiseok},
@@ -153,5 +151,4 @@ multi-hop results, significance tests, and the full ablations.
 
 ## License
 
-The code in this repository is released under the [MIT License](LICENSE). The
-paper itself is distributed under CC BY 4.0 via arXiv.
+The code in this repository is released under the [MIT License](LICENSE). The paper itself is distributed under CC BY 4.0 via arXiv.

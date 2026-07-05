@@ -9,3 +9,7 @@ venv/
 *.log
 results/
 data/
+
+# keep README figure assets
+!assets/
+!assets/*.png
