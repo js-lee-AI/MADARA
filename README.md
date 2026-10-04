@@ -7,6 +7,7 @@
 <em>To Isolate or to Score? Model-Adaptive Assessment for Cost-Efficient Multi-Agent RAG</em>
 
 [![arXiv](https://img.shields.io/badge/arXiv-2606.25191-b31b1b.svg)](https://arxiv.org/abs/2606.25191)
+[![Project Page](https://img.shields.io/badge/Project-Page-245a84.svg)](https://js-lee-ai.github.io/MADARA/)
 [![License: MIT](https://img.shields.io/badge/Code-MIT-green.svg)](LICENSE)
 [![Paper: CC BY 4.0](https://img.shields.io/badge/Paper-CC%20BY%204.0-blue.svg)](https://arxiv.org/abs/2606.25191)
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
@@ -16,7 +17,7 @@
 
 <em>A training-free pipeline that diagnoses each model-task pair and routes it to the cheapest document-assessment treatment that actually works.</em>
 
-<b><a href="https://arxiv.org/abs/2606.25191">📄 Paper</a> · <a href="#overview">✨ Overview</a> · <a href="#installation">⚙️ Installation</a> · <a href="#usage">🚀 Usage</a> · <a href="#results">📊 Results</a> · <a href="#citation">📌 Citation</a></b>
+<b><a href="https://js-lee-ai.github.io/MADARA/">🌐 Project Page</a> · <a href="https://arxiv.org/abs/2606.25191">📄 Paper</a> · <a href="#overview">✨ Overview</a> · <a href="#installation">⚙️ Installation</a> · <a href="#usage">🚀 Usage</a> · <a href="#results">📊 Results</a> · <a href="#citation">📌 Citation</a></b>
 
 </div>
 
